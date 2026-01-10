@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>asia.buildtheearth.asean.geotools</groupId>
+        <artifactId>geotools</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <name>Terra Projections</name>
+    <description>Build-The-Earth terra projections library (Fork of terraminusminus)</description>
+    <url>https://github.com/ASEAN-Build-The-Earth/terra-projections/</url>
+    <inceptionYear>2026</inceptionYear>
+    <artifactId>terra-projections</artifactId>
+    <packaging>jar</packaging>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <issueManagement>
+        <system>Github</system>
+        <url>https://github.com/ASEAN-Build-The-Earth/terra-projections/issues</url>
+    </issueManagement>
+    <scm>
+        <url>https://github.com/ASEAN-Build-The-Earth/terra-projections/tree/master</url>
+        <connection>scm:git@github.com:ASEAN-Build-The-Earth/terra-projections.git</connection>
+        <developerConnection>scm:git@github.com:ASEAN-Build-The-Earth/terra-projections.git</developerConnection>
+    </scm>
+    <developers>
+        <developer>
+            <name>DaPorkchop_</name>
+            <email>fredbobson7@gmail.com</email>
+            <url>https://github.com/DaMatrix</url>
+            <organization>PorkStudios</organization>
+            <organizationUrl>https://github.com/PorkStudios</organizationUrl>
+        </developer>
+        <developer>
+            <name>Smyler</name>
+            <email>smyler@mail.com</email>
+            <url>https://github.com/SmylerMC</url>
+        </developer>
+        <developer>
+            <name>Tintinkung</name>
+            <email>tintinkung.lemonade@gmail.com</email>
+            <url>https://github.com/tintinkung</url>
+            <organization>ASEAN Build The Earth</organization>
+            <organizationUrl>https://github.com/ASEAN-Build-The-Earth</organizationUrl>
+        </developer>
+    </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <build.number>${project.parent.version}</build.number>
+    </properties>
+    <build>
+        <!-- IMPORTANT: Plugin Building Path -->
+        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+        <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
+
+        <!-- IMPORTANT: Output File Name -->
+        <finalName>${project.artifactId}-${project.version}</finalName>
+
+        <resources>
+            <resource>
+                <directory>tools/src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>tools/src/test/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <!-- TODO: Add build plugins -->
+        </plugins>
+    </build>
+    <repositories>
+        <repository>
+            <id>sonatype</id>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+         <!-- TODO: Add required dependencies -->
+    </dependencies>
+
+</project>
