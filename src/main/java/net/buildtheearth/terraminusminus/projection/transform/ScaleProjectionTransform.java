@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.base.Preconditions;
 import lombok.Getter;
 import net.buildtheearth.terraminusminus.projection.GeographicProjection;
-import net.buildtheearth.terraminusminus.projection.OutOfProjectionBoundsException;
 
 /**
  * Scales the warps projection's projected space up or down.
@@ -39,13 +38,14 @@ public class ScaleProjectionTransform extends ProjectionTransform {
     }
 
     @Override
-    public double[] toGeo(double x, double y) throws OutOfProjectionBoundsException {
-        return this.delegate.toGeo(x / this.x, y / this.y);
+    public double[] inverseTransform(double[] xy) {
+        xy[0] /= this.x;
+        xy[1] /= this.y;
+        return xy;
     }
 
     @Override
-    public double[] fromGeo(double lon, double lat) throws OutOfProjectionBoundsException {
-        double[] p = this.delegate.fromGeo(lon, lat);
+    public double[] transform(double[] p) {
         p[0] *= this.x;
         p[1] *= this.y;
         return p;

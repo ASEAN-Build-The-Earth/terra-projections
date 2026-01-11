@@ -27,10 +27,18 @@ public class CenteredMercatorProjection implements GeographicProjection {
     @Override
     public double[] fromGeo(double longitude, double latitude) throws OutOfProjectionBoundsException {
         OutOfProjectionBoundsException.checkInRange(longitude, latitude, 180, WebMercatorProjection.LIMIT_LATITUDE);
-        return new double[]{
-                longitude / 180.0,
-                -(Math.log(Math.tan((Math.PI / 2 + Math.toRadians(latitude)) / 2))) / Math.PI
-        };
+        return GeographicProjection.super.fromGeo(longitude, latitude);
+    }
+
+    @Override
+    public double[] fromGeoNormalized(double x, double y) {
+        // TODO: Test the maths
+        return new double[]{ x  -Math.log(this.tsfn(y, Math.sin(y))) };
+    }
+
+    final double tsfn(double phi, double sinphi) {
+        // TODO: Test the maths
+        return Math.tan((double)0.5F * ((Math.PI / 2D) - phi)) / Math.pow(((double)1.0F - sinphi) / ((double)1.0F + sinphi), (double)0.5F );
     }
 
     @Override

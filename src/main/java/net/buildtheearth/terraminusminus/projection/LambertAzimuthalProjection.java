@@ -43,7 +43,7 @@ public class LambertAzimuthalProjection implements GeographicProjection {
     }
 
     @Override
-    public double[] toGeo(double x, double y) throws OutOfProjectionBoundsException {
+    public double[] toGeoNormalized(double x, double y) throws OutOfProjectionBoundsException {
         double phi1 = toRadians(this.centerY);
         double lambda0 = toRadians(this.centerX);
 
@@ -64,6 +64,12 @@ public class LambertAzimuthalProjection implements GeographicProjection {
     }
 
     @Override
+    public double[] toGeo(double x, double y) throws OutOfProjectionBoundsException {
+        // TODO: Implement
+        return new double[0];
+    }
+
+    @Override
     public double[] fromGeo(double longitude, double latitude) throws OutOfProjectionBoundsException {
         OutOfProjectionBoundsException.checkLongitudeLatitudeInRange(longitude, latitude);
 
@@ -78,6 +84,12 @@ public class LambertAzimuthalProjection implements GeographicProjection {
         double y = k * (cos(phi1) * sin(phi) - sin(phi1) * cos(phi) * cos(lambda - lambda0));
 
         return new double[]{ x, y };
+    }
+
+    @Override
+    public double[] fromGeoNormalized(double lambda, double phi) {
+        // TODO: Implement
+        return new double[0];
     }
 
     @Override

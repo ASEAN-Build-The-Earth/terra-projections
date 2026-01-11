@@ -36,9 +36,23 @@ public interface GeographicProjection {
     /**
      * Converts map coordinates to geographic coordinates
      *
+     * @param lambda - x map coordinate (normalized)
+     * @param phi - y map coordinate (normalized)
+     * @return {longitude, latitude} normalized
+     * @throws OutOfProjectionBoundsException if the specified point on the projected space cannot be mapped to a point of the geographic space
+     */
+    default double[] toGeoNormalized(double lambda, double phi) throws OutOfProjectionBoundsException {
+        double x = Math.toDegrees(lambda);
+        double y = Math.toDegrees(phi);
+        return toGeo(x, y);
+    }
+
+    /**
+     * Converts map coordinates to geographic coordinates
+     *
      * @param x - x map coordinate
      * @param y - y map coordinate
-     * @return {longitude, latitude} in degrees
+     * @return {longitude, latitude} normalized
      * @throws OutOfProjectionBoundsException if the specified point on the projected space cannot be mapped to a point of the geographic space
      */
     double[] toGeo(double x, double y) throws OutOfProjectionBoundsException;
@@ -51,7 +65,21 @@ public interface GeographicProjection {
      * @return {x, y} map coordinates
      * @throws OutOfProjectionBoundsException if the specified point on the geographic space cannot be mapped to a point of the projected space
      */
-    double[] fromGeo(double longitude, double latitude) throws OutOfProjectionBoundsException;
+    default double[] fromGeo(double longitude, double latitude) throws OutOfProjectionBoundsException {
+        double lambda = Math.toRadians(longitude);
+        double phi = Math.toRadians(latitude);
+        return fromGeoNormalized(lambda, phi);
+    }
+
+    /**
+     * Converts geographic coordinates to map coordinates
+     *
+     * @param lambda - longitude (normalized)
+     * @param phi  - latitude, (normalized)
+     * @return {x, y} map coordinates
+     * @throws OutOfProjectionBoundsException if the specified point on the geographic space cannot be mapped to a point of the projected space
+     */
+    double[] fromGeoNormalized(double lambda, double phi) throws OutOfProjectionBoundsException;
 
     /**
      * Gives an estimation of the scale of this projection.
@@ -120,7 +148,7 @@ public interface GeographicProjection {
      * @return {distance x, distance y} on the projected space
      */
     default double[] vector(double x, double y, double north, double east) throws OutOfProjectionBoundsException {
-        double[] geo = this.toGeo(x, y);
+        double[] geo = this.toGeoNormalized(x, y);
 
         //TODO: east may be slightly off because earth not a sphere
         double[] off = this.fromGeo(geo[0] + east * 360.0 / (Math.cos(Math.toRadians(geo[1])) * TerraConstants.EARTH_CIRCUMFERENCE),
@@ -200,8 +228,8 @@ public interface GeographicProjection {
     default float azimuth(double x, double y, float angle, double d) throws OutOfProjectionBoundsException {
         double x2 = x - d * Math.sin(Math.toRadians(angle));
         double y2 = y + d * Math.cos(Math.toRadians(angle));
-        double[] geo1 = this.toGeo(x, y);
-        double[] geo2 = this.toGeo(x2, y2);
+        double[] geo1 = this.toGeoNormalized(x, y);
+        double[] geo2 = this.toGeoNormalized(x2, y2);
         MathUtils.toRadians(geo1);
         MathUtils.toRadians(geo2);
         double dlon = geo2[0] - geo1[0];

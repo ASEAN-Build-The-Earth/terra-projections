@@ -18,7 +18,7 @@ public class EqualEarthProjection implements GeographicProjection {
     private static final double A4 = 0.003796;
 
     @Override
-    public double[] toGeo(double x, double y) {
+    public double[] toGeoNormalized(double x, double y) {
 
         double theta = y / A1; //start with initial guess at y/A1 since A1 is by far the largest term
 
@@ -55,6 +55,12 @@ public class EqualEarthProjection implements GeographicProjection {
     }
 
     @Override
+    public double[] toGeo(double x, double y) throws OutOfProjectionBoundsException {
+        // TODO: Implement
+        return new double[0];
+    }
+
+    @Override
     public double[] fromGeo(double longitude, double latitude) throws OutOfProjectionBoundsException {
     	OutOfProjectionBoundsException.checkLongitudeLatitudeInRange(longitude, latitude);
         double sintheta = MathUtils.ROOT3 * Math.sin(Math.toRadians(latitude)) / 2;
@@ -73,6 +79,12 @@ public class EqualEarthProjection implements GeographicProjection {
         double costheta = Math.sqrt(1 - sintheta * sintheta);
 
         return new double[]{ (2 * MathUtils.ROOT3 * Math.toRadians(longitude) * costheta / 3) / x, y };
+    }
+
+    @Override
+    public double[] fromGeoNormalized(double lambda, double phi) {
+        // TODO: Implement
+        return new double[0];
     }
 
     @Override

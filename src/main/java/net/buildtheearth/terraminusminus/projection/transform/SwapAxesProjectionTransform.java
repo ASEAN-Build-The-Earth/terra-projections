@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import net.buildtheearth.terraminusminus.projection.GeographicProjection;
-import net.buildtheearth.terraminusminus.projection.OutOfProjectionBoundsException;
 
 /**
  * Inverses the warped projection such that x becomes y and y becomes x.
@@ -23,13 +22,7 @@ public class SwapAxesProjectionTransform extends ProjectionTransform {
     }
 
     @Override
-    public double[] toGeo(double x, double y) throws OutOfProjectionBoundsException {
-        return this.delegate.toGeo(y, x);
-    }
-
-    @Override
-    public double[] fromGeo(double lon, double lat) throws OutOfProjectionBoundsException {
-        double[] p = this.delegate.fromGeo(lon, lat);
+    public double[] transform(double[] p) {
         double t = p[0];
         p[0] = p[1];
         p[1] = t;

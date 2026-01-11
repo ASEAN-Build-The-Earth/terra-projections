@@ -23,13 +23,7 @@ public class FlipVerticalProjectionTransform extends ProjectionTransform {
     }
 
     @Override
-    public double[] toGeo(double x, double y) throws OutOfProjectionBoundsException {
-        return this.delegate.toGeo(x, -y);
-    }
-
-    @Override
-    public double[] fromGeo(double longitude, double latitude) throws OutOfProjectionBoundsException {
-        double[] p = this.delegate.fromGeo(longitude, latitude);
+    public double[] transform(double[] p) {
         p[1] = -p[1];
         return p;
     }

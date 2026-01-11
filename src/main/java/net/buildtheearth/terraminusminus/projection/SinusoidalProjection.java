@@ -12,14 +12,26 @@ import net.buildtheearth.terraminusminus.TerraConstants;
 @JsonDeserialize
 public class SinusoidalProjection implements GeographicProjection {
     @Override
-    public double[] toGeo(double x, double y) {
+    public double[] toGeoNormalized(double x, double y) {
         return new double[]{ x / Math.cos(Math.toRadians(y)), y };
+    }
+
+    @Override
+    public double[] toGeo(double x, double y) throws OutOfProjectionBoundsException {
+        // TODO: Implement
+        return new double[0];
     }
 
     @Override
     public double[] fromGeo(double longitude, double latitude) throws OutOfProjectionBoundsException {
     	OutOfProjectionBoundsException.checkLongitudeLatitudeInRange(longitude, latitude);
         return new double[]{ longitude * Math.cos(Math.toRadians(latitude)), latitude };
+    }
+
+    @Override
+    public double[] fromGeoNormalized(double lambda, double phi) {
+        // TODO: Implement
+        return new double[0];
     }
 
     @Override

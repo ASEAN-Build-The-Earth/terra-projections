@@ -59,10 +59,14 @@ public class ProjectionTest extends TerraMinusMinusTest {
             double z = mcs[i * 2 + 1];
             double[] lola = projection.toGeo(x, z);
             double[] xz = projection.fromGeo(lon, lat);
-            assertEquals(lon, lola[0], .1d);
-            assertEquals(lat, lola[1], .1d);
+            double[] xzn = projection.fromGeoNormalized(Math.toRadians(lon), Math.toRadians(90 - lat));
+
+            assertEquals(lon, Math.toDegrees(lola[0]), .1d);
+            assertEquals(lat, 90 - Math.toDegrees(lola[1]), .1d);
             assertEquals(x, xz[0], .1d);
             assertEquals(z, xz[1], .1d);
+            assertEquals(x, xzn[0], .1d);
+            assertEquals(z, xzn[1], .1d);
         }
     }
 

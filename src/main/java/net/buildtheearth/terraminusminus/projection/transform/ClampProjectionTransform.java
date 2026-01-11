@@ -46,16 +46,7 @@ public class ClampProjectionTransform extends ProjectionTransform {
     }
 
     @Override
-    public double[] toGeo(double x, double y) throws OutOfProjectionBoundsException {
-        if (x < this.minX || x > this.maxX || y < this.minY || y > this.maxY) {
-            throw OutOfProjectionBoundsException.get();
-        }
-        return super.delegate.toGeo(x, y);
-    }
-
-    @Override
-    public double[] fromGeo(double longitude, double latitude) throws OutOfProjectionBoundsException {
-        double[] pos = super.delegate.fromGeo(longitude, latitude);
+    public double[] transform(double[] pos) throws OutOfProjectionBoundsException {
         if (pos[0] < this.minX || pos[0] > this.maxX || pos[1] < this.minY || pos[1] > this.maxY) {
             throw OutOfProjectionBoundsException.get();
         }

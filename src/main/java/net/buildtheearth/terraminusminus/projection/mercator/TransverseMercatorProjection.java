@@ -28,8 +28,23 @@ public class TransverseMercatorProjection implements GeographicProjection {
      * @return the central meridian to use when projecting at the given longitude, in radians
      */
     public static double getCentralMeridian(double longitude) {
+        // TODO: Test the maths
+        double t = longitude + (double)(getZone(longitude, ZONE_WIDTH) - 1) * ZONE_WIDTH;
+        t -= (double)360.0F * Math.floor((t + (double)180.0F) / (double)360.0F);
+        return t;
+
         //TODO Why is there a Math.floor here? It seems to work a lot better without it
-        return (Math.floor(longitude / ZONE_WIDTH) + 0.5) * ZONE_WIDTH;
+        //return (Math.floor(longitude / ZONE_WIDTH) + 0.5) * ZONE_WIDTH;
+    }
+
+    private static int getZone(double centralLongitudeZone1, double zoneWidth) {
+        // TODO: Test the maths
+        double zoneCount = Math.abs((double)360.0F / zoneWidth);
+        double t = centralLongitudeZone1 - (double)0.5F * zoneWidth;
+        // t = Math.toDegrees(this.centralMeridian) - t;
+        t = Math.floor(t / zoneWidth + 1.0E-6);
+        t -= zoneCount * Math.floor(t / zoneCount);
+        return (int)t + 1;
     }
 
     @Override
@@ -37,6 +52,12 @@ public class TransverseMercatorProjection implements GeographicProjection {
         OutOfProjectionBoundsException.checkLongitudeLatitudeInRange(longitude, latitude);
         double lam = Math.toRadians(longitude);
         double phi = Math.toRadians(latitude);
+        return this.fromGeoNormalized(lam, phi);
+    }
+
+    @Override
+    public double[] fromGeoNormalized(double lam, double phi) {
+        // TODO: Test the maths
         double centralMeridian = getCentralMeridian(lam);
         lam -= centralMeridian;
 
@@ -57,6 +78,14 @@ public class TransverseMercatorProjection implements GeographicProjection {
         double lon = Math.toDegrees(lam);
         double lat = Math.toDegrees(phi);
         return new double[]{ lon, lat };
+    }
+
+    @Override
+    public double[] toGeoNormalized(double lambda, double phi) throws OutOfProjectionBoundsException {
+        // TODO: Test the maths
+        double x = Math.toDegrees(lambda);
+        double y = Math.toDegrees(phi);
+        return this.toGeo(x, y);
     }
 
     @Override

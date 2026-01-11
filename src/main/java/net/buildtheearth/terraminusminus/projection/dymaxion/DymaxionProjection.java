@@ -344,12 +344,8 @@ public class DymaxionProjection implements GeographicProjection {
         return this.inverseTriangleTransformNewton(x, y);
     }
 
-    @Override
-    public double[] fromGeo(double longitude, double latitude) throws OutOfProjectionBoundsException {
-    	
-    	OutOfProjectionBoundsException.checkLongitudeLatitudeInRange(longitude, latitude);
-
-        double[] vector = MathUtils.spherical2Cartesian(MathUtils.geo2Spherical(new double[]{ longitude, latitude }));
+    protected double[] transformNormalized(double lambda, double phi) {
+        double[] vector = MathUtils.spherical2Cartesian(new double[]{ lambda, phi });
 
         int face = this.findTriangle(vector);
 
@@ -375,6 +371,28 @@ public class DymaxionProjection implements GeographicProjection {
         projectedVec[1] += CENTER_MAP[face][1];
 
         return projectedVec;
+    }
+
+    @Override
+    public double[] fromGeo(double longitude, double latitude) throws OutOfProjectionBoundsException {
+        OutOfProjectionBoundsException.checkLongitudeLatitudeInRange(longitude, latitude);
+        double[] spherical = MathUtils.geo2Spherical(new double[]{ longitude, latitude });
+        double lambda = spherical[0];
+        double phi = spherical[1];
+        return transformNormalized(lambda, phi);
+    }
+
+    @Override
+    public double[] fromGeoNormalized(double lambda, double phi) {
+       return transformNormalized(lambda, phi);
+    }
+
+    @Override
+    public double[] toGeoNormalized(double lambda, double phi) throws OutOfProjectionBoundsException {
+        double[] spherical = MathUtils.spherical2Geo(new double[]{ lambda, phi });
+        double x = spherical[0];
+        double y = spherical[1];
+        return toGeo(x, y);
     }
 
     @Override
@@ -428,8 +446,7 @@ public class DymaxionProjection implements GeographicProjection {
         //apply inverse rotation matrix (move triangle from template triangle to correct position on globe)
         double[] vecp = MathUtils.matVecProdD(INVERSE_ROTATION_MATRICES[face], vec);
 
-        //convert back to geo coordinates
-        return MathUtils.spherical2Geo(MathUtils.cartesian2Spherical(vecp));
+        return MathUtils.cartesian2Spherical(vecp);
     }
 
     @Override

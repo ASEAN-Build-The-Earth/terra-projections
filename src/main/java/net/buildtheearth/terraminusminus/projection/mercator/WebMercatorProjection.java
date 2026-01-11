@@ -43,6 +43,14 @@ public class WebMercatorProjection implements GeographicProjection {
     }
 
     @Override
+    public double[] toGeoNormalized(double lambda, double phi) throws OutOfProjectionBoundsException {
+        // TODO: Test the maths
+        double x = Math.toDegrees(lambda);
+        double y = Math.toDegrees(phi);
+        return this.toGeo(x, y);
+    }
+
+    @Override
     public double[] toGeo(double x, double y) throws OutOfProjectionBoundsException {
         if (x < 0 || y < 0 || x > this.scaleFrom || y > this.scaleFrom) {
             throw OutOfProjectionBoundsException.get();
@@ -56,9 +64,14 @@ public class WebMercatorProjection implements GeographicProjection {
     @Override
     public double[] fromGeo(double longitude, double latitude) throws OutOfProjectionBoundsException {
         OutOfProjectionBoundsException.checkInRange(longitude, latitude, 180, LIMIT_LATITUDE);
+        return this.fromGeoNormalized(Math.toRadians(longitude), Math.toRadians(latitude));
+    }
+
+    @Override
+    public double[] fromGeoNormalized(double lambda, double phi) {
         return new double[]{
-                this.scaleFrom * (Math.toRadians(longitude) + Math.PI) / MathUtils.TAU,
-                this.scaleFrom * (Math.PI - Math.log(Math.tan((Math.PI / 2 + Math.toRadians(latitude)) / 2))) / MathUtils.TAU
+                this.scaleFrom * (lambda + Math.PI) / MathUtils.TAU,
+                this.scaleFrom * (Math.PI - Math.log(Math.tan((Math.PI / 2 + phi) / 2))) / MathUtils.TAU
         };
     }
 

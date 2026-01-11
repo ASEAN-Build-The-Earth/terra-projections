@@ -16,9 +16,15 @@ public class EquirectangularProjection implements GeographicProjection {
      * @return {longitude, latitude} in degrees
      */
     @Override
-    public double[] toGeo(double x, double y) throws OutOfProjectionBoundsException {
+    public double[] toGeoNormalized(double x, double y) throws OutOfProjectionBoundsException {
         OutOfProjectionBoundsException.checkLongitudeLatitudeInRange(x, y);
         return new double[]{ x, y };
+    }
+
+    @Override
+    public double[] toGeo(double x, double y) throws OutOfProjectionBoundsException {
+        // TODO: Implement
+        return new double[0];
     }
 
     /**
@@ -32,6 +38,12 @@ public class EquirectangularProjection implements GeographicProjection {
     public double[] fromGeo(double longitude, double latitude) throws OutOfProjectionBoundsException {
         OutOfProjectionBoundsException.checkLongitudeLatitudeInRange(longitude, latitude);
         return new double[]{ longitude, latitude };
+    }
+
+    @Override
+    public double[] fromGeoNormalized(double lambda, double phi) {
+        // TODO: Implement
+        return new double[0];
     }
 
     /**

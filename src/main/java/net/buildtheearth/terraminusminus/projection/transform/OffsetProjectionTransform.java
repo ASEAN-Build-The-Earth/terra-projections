@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.base.Preconditions;
 import lombok.Getter;
 import net.buildtheearth.terraminusminus.projection.GeographicProjection;
-import net.buildtheearth.terraminusminus.projection.OutOfProjectionBoundsException;
 
 /**
  * Applies a simple translation to the projected space, such that:
@@ -46,13 +45,14 @@ public class OffsetProjectionTransform extends ProjectionTransform {
     }
 
     @Override
-    public double[] toGeo(double x, double y) throws OutOfProjectionBoundsException {
-        return this.delegate.toGeo(x - this.dx, y - this.dy);
+    public double[] inverseTransform(double[] pos) {
+        pos[0] -= this.dx;
+        pos[1] -= this.dy;
+        return pos;
     }
 
     @Override
-    public double[] fromGeo(double longitude, double latitude) throws OutOfProjectionBoundsException {
-        double[] pos = this.delegate.fromGeo(longitude, latitude);
+    public double[] transform(double[] pos) {
         pos[0] += this.dx;
         pos[1] += this.dy;
         return pos;
