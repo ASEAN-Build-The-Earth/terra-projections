@@ -62,8 +62,8 @@
         <!-- IMPORTANT: Plugin Building Path -->
 
         <!-- SWITCH FOR ${basedir} FOR DEVELOPMENT -->
-        <!-- NOTE: Delombok required source separations -->
-        <!-- NOTE: Use the generated sources instead, we delombok FIRST before doing any maven phases -->
+        <!-- NOTE: De-lombok required source separations -->
+        <!-- NOTE: Use the generated sources instead, we de-lombok FIRST before doing any maven phases -->
         <sourceDirectory>target/generated-sources/delombok</sourceDirectory>
         <testSourceDirectory>target/generated-test-sources/delombok</testSourceDirectory>
 
@@ -75,7 +75,7 @@
 
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>${basedir}/src/main/resources</directory>
                 <filtering>false</filtering>
             </resource>
         </resources>
@@ -113,7 +113,10 @@
                             <!-- We only use terraminusminus for projection, datasets is not needed -->
                             <artifact>*:*</artifact>
                             <includes>
+                                <include>net/buildtheearth/terraminusminus/util/MathUtils.java</include>
+                                <include>net/buildtheearth/terraminusminus/config/**</include>
                                 <include>net/buildtheearth/terraminusminus/projection/**</include>
+                                <include>META-INF/**</include>
                             </includes>
                         </filter>
                     </filters>
