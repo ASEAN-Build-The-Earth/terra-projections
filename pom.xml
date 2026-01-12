@@ -113,10 +113,23 @@
                             <!-- We only use terraminusminus for projection, datasets is not needed -->
                             <artifact>*:*</artifact>
                             <includes>
-                                <include>net/buildtheearth/terraminusminus/util/MathUtils.java</include>
+                                <include>META-INF/**</include>
                                 <include>net/buildtheearth/terraminusminus/config/**</include>
                                 <include>net/buildtheearth/terraminusminus/projection/**</include>
-                                <include>META-INF/**</include>
+                                <!-- Mandatory classes -->
+                                <include>net/buildtheearth/terraminusminus/util/MathUtils.class</include>
+                                <include>net/buildtheearth/terraminusminus/util/Strings.class</include>
+                                <include>net/buildtheearth/terraminusminus/TerraConstants.class</include>
+                                <include>net/buildtheearth/terraminusminus/TerraMinusMinus.class</include>
+                                <include>net/buildtheearth/terraminusminus/dataset/osm/BlockStateParser.class</include>
+                                <include>net/buildtheearth/terraminusminus/dataset/osm/JsonParser.class</include>
+                                <include>net/buildtheearth/terraminusminus/substitutes/BlockState.class</include>
+                                <include>net/buildtheearth/terraminusminus/substitutes/Biome.class</include>
+                                <include>net/buildtheearth/terraminusminus/util/BiomeDeserializeMixin.class</include>
+                                <include>net/buildtheearth/terraminusminus/substitutes/BlockStateBuilder.class</include>
+                                <include>net/buildtheearth/terraminusminus/substitutes/BlockState.class</include>
+                                <include>net/buildtheearth/terraminusminus/substitutes/Identifier.class</include>
+                                <include>net/buildtheearth/terraminusminus/substitutes/exceptions/SubstituteParseException.class</include>
                             </includes>
                         </filter>
                     </filters>
